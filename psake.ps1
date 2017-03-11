@@ -1,4 +1,4 @@
-# PSake makes variables declared here available in other scriptblocks
+﻿# PSake makes variables declared here available in other scriptblocks
 # Init some things
 Properties {
     # Find the build folder based on build system
@@ -63,7 +63,15 @@ Task Build -Depends Test {
     Set-ModuleFunctions
 
     # Bump the module version
-    Update-Metadata -Path $env:BHPSModuleManifest
+    Try
+    {
+        $Version = Get-NextPSGalleryVersion -Name $env:BHProjectName -ErrorAction Stop
+        Update-Metadata -Path $env:BHPSModuleManifest -PropertyName ModuleVersion -Value $Version -ErrorAction stop
+    }
+    Catch
+    {
+        "Failed to update version for '$env:BHProjectName': $_.`nContinuing with existing version"
+    }
 }
 
 Task Deploy -Depends Build {
