@@ -13,8 +13,3 @@ os: WMF 5
 skip_commits:
   message: /updated readme.*|update readme.*s/
 
-build: false
-
-#Kick off the CI/CD pipeline
-test_script:
-- ps: . .\build.ps1
