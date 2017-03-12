@@ -5,7 +5,7 @@ ArcAdminTools
 
 PowerShell module with Admin Tools 
 
-This is a PowerShell module with a variety of functions usefull in a day-to-day tasks or a regular SysAdmin or HelpDesk support technician.
+This is a PowerShell module with a variety of functions usefull in a day-to-day tasks or a regular SysAdmin or HelpDesk Support technician job.
 
 Pull requests and other contributions are more than welcome!
 
