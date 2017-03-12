@@ -56,7 +56,7 @@
   #>
 
   [CmdletBinding()]             
-  [OutputType([PSCustomObject])]
+  [OutputType([PSObject])]
   param(                        
     [Parameter(Mandatory=$false,HelpMessage='Destination Computer name')]             
     [string[]]
@@ -117,7 +117,7 @@
         
       }
       catch {
-        $scriptName = split-path ($_.InvocationInfo.ScriptName) -Leaf
+        $scriptName = split-path -Path ($_.InvocationInfo.ScriptName) -Leaf
         $scriptLine = $_.InvocationInfo.ScriptLineNumber
         $errorMessage = $_.Exception.InnerException.Message
         Write-Error -Message "[$((get-date).TimeOfDay.ToString()) PROCESS ] $scriptName/$scriptLine : $errorMessage "
@@ -135,8 +135,8 @@
   }
 
   End {
-    Write-Verbose "[$((get-date).TimeOfDay.ToString()) END     ] Ending: $($MyInvocation.Mycommand)"
-    Write-Verbose "Ending $($MyInvocation.MyCommand) " 
+    Write-Verbose -Message "[$((get-date).TimeOfDay.ToString()) END     ] Ending: $($MyInvocation.Mycommand)"
+    Write-Verbose -Message "Ending $($MyInvocation.MyCommand)" 
   }
 
 
