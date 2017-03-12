@@ -5,7 +5,7 @@
       Adds a user or a group to local group on a remote computer. 
 
       .DESCRIPTION
-      Will add user or groupo to a local group on a remote computer. LocalGroup parameter specifies which group it will be, i.e. Administrators, Remote Desktop Users, or others.
+      Will add user or groupo to a local group on a remote computer. LocalGroup parameter specifies which group it will be, i.e. Administrators, Remote Desktop Users, or others. Output is a custom object with  computername, localgroup, identity and status of action
 
       .PARAMETER ComputerName
       Destination computer name where to add user or group (Identity parameter). Will accept mupltiple values.
@@ -23,12 +23,40 @@
       Identity of a user/group to add. Provide samaccountname
 
       .EXAMPLE
-      This will add 'someuser' to 'somecomputer' as local administrator for current default user domain
       Add-ToLocalGroup -ComputerName 'somecomputer' -Group Administrators -Type User -Identity 'someuser'
+      This will add 'someuser' to 'somecomputer' as local administrator for current default user domain
+      
+
+      .EXAMPLE
+      Add-ToLocalGroup -LocalGroup 'administrators' -Type User -Identity test1 -ComputerName 'somecomputer1','somecomputer2' -Verbose -DomainName 'somedomain'
+      This will add somedomain\test1 user to group Administrators on both somecomputer1 and somecomputer2 providing Verbose output:
+        VERBOSE: Starting Add-ToLocalGroup 
+        VERBOSE: Execution Metadata:
+        VERBOSE: User = SOMEDOMAIN\test1
+        VERBOSE: Computername = MyMachine
+        VERBOSE: Host = Windows PowerShell ISE Host
+        VERBOSE: PSVersion = 5.1.14393.693
+        VERBOSE: Runtime = 03/12/2017 15:22:26
+        VERBOSE: [15:22:26.4476294 BEGIN   ] Starting: Add-ToLocalGroup
+        VERBOSE: [15:22:26.4476294 PROCESS ] Processing computer {somecomputer1}
+        VERBOSE: [15:22:26.4481291 PROCESS ] Trying to use ADSI connector to access to computer {somecomputer1} local group {administrators}
+        VERBOSE: [15:22:26.4486294 PROCESS ] Trying to use ADSI connector to add user {test1} to local group {administrators} on computer {somecomputer1}
+        Computername  LocalGroup     Identity status 
+        ------------  ----------     -------- ------ 
+        somecomputer1 administrators test1    Success
+        VERBOSE: [15:22:28.7263823 PROCESS ] Processing computer {somecomputer2}
+        VERBOSE: [15:22:28.7268819 PROCESS ] Trying to use ADSI connector to access to computer {somecomputer1} local group {administrators}
+        VERBOSE: [15:22:28.7268819 PROCESS ] Trying to use ADSI connector to add user {test1} to local group {administrators} on computer {somecomputer1}
+        Computername  LocalGroup     Identity status 
+        ------------  ----------     -------- ------ 
+        somecomputer2 administrators test1    Success
+        VERBOSE: [15:22:30.9911669 END     ] Ending: Add-ToLocalGroup
+        VERBOSE: Ending Add-ToLocalGroup 
+
   #>
 
   [CmdletBinding()]             
-  [OutputType([void])]
+  [OutputType([PSCustomObject])]
   param(                        
     [Parameter(Mandatory=$false,HelpMessage='Destination Computer name')]             
     [string[]]
