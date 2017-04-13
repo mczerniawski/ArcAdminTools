@@ -25,6 +25,8 @@
         Author = 'Mateusz Czerniawski'
         Description = 'Module for basic Management'
         ModuleVersion = '1.0.1'
+        LicenseUri = 'https://github.com/mczerniawski/SomeModule/blob/master/LICENSE'
+        ProjectUri = 'https://github.com/mczerniawski/SomeModule/'
       }
       New-ArcModule @moduleParams
 
@@ -156,7 +158,9 @@
        
       }
       catch {
-        Write-Error -Message $problems 
+        foreach ($p in $problems) { 
+          Write-Error -Message $p
+        } 
       }
     }
   }
