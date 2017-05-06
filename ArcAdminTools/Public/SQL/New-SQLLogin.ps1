@@ -65,7 +65,7 @@
     $Identity,
     
     [Parameter(Mandatory=$false,HelpMessage = 'Provide LoginType')]             
-    [ValidateSet('AsymmetricKey', 'Certificate', 'SqlLogin', 'WindowsGroup', 'WindowsUser')]
+    [ValidateSet('WindowsGroup', 'WindowsUser')]
     [string]
     $LoginType = 'WindowsUser',
      
@@ -114,7 +114,6 @@
       }
     }
     else {
-      #ToCHeck if this is correct
       $sqlserver = new-object -TypeName 'Microsoft.SqlServer.Management.Smo.Server' -ArgumentList "$Computername\$SQLInstance"
     }
    
@@ -135,10 +134,10 @@
       Write-Verbose -Message "[$((get-date).TimeOfDay.ToString()) PROCESS ] Checking if role {$SQLRole} on server {$sqlserver} is valid"
       $sqlServerRole = $sqlserver.Roles[$SQLRole]
       if(-not ($sqlServerRole) ) {
-        Write-Verbose -Message "[$((get-date).TimeOfDay.ToString()) PROCESS ] Role $SQLRole is not a valid Role on $sqlserver"
+        Write-Verbose -Message "[$((get-date).TimeOfDay.ToString()) PROCESS ] Role {$SQLRole} is not a valid Role on server {$sqlserver}"
         break
       }
-      Write-Verbose -Message "[$((get-date).TimeOfDay.ToString()) PROCESS ] Role $SQLRole is a valid Role on $sqlserver"
+      Write-Verbose -Message "[$((get-date).TimeOfDay.ToString()) PROCESS ] Role {$SQLRole} is a valid Role on server {$sqlserver}"
       if ($sqlServerRole.EnumServerRoleMembers() -contains $Identity) {
         Write-Verbose -Message "[$((get-date).TimeOfDay.ToString()) PROCESS ] User {$Identity} exists in role {$SQLRole} on server {$sqlserver}"
       }
