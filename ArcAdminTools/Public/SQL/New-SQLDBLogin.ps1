@@ -90,8 +90,8 @@
         $sqlserver = new-object -TypeName 'Microsoft.SqlServer.Management.Smo.Server' -ArgumentList $server
       }
       elseif ($sqlInstEnum.Count -ge 2) {
-        Write-Warning -Message "[$((get-date).TimeOfDay.ToString()) PROCESS ] Found more than 1 instance on server {$Computername}. Please specify which one of following should be used:"
-        Write-Warning -Message "[$((get-date).TimeOfDay.ToString()) PROCESS ] SQLInstance :$sqlInstEnum"
+        Write-Error -Message "[$((get-date).TimeOfDay.ToString()) PROCESS ] Found more than 1 instance on server {$Computername}. Please specify which one of following should be used:"
+        Write-Error -Message "[$((get-date).TimeOfDay.ToString()) PROCESS ] SQLInstance :$sqlInstEnum"
         break
       }
       else {
@@ -102,6 +102,7 @@
     }
     else {
       $sqlserver = new-object -TypeName 'Microsoft.SqlServer.Management.Smo.Server' -ArgumentList "$Computername\$SQLInstance"
+      Write-Verbose -Message "[$((get-date).TimeOfDay.ToString()) PROCESS ] Using provided instance {$SQLInstance} on server {$Computername}"
     }
    
     Write-Verbose -Message "[$((get-date).TimeOfDay.ToString()) PROCESS ] Checking if user {$Identity} exists on server {$sqlserver}"
