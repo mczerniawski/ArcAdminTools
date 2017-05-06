@@ -54,7 +54,7 @@
     $Database,
     
     [Parameter(Mandatory=$true,HelpMessage='Provide role name to alter with new user')]             
-    [string[]]
+    [string]
     $DBRole
   
   )
@@ -92,6 +92,7 @@
       elseif ($sqlInstEnum.Count -ge 2) {
         Write-Warning -Message "[$((get-date).TimeOfDay.ToString()) PROCESS ] Found more than 1 instance on server {$Computername}. Please specify which one of following should be used:"
         Write-Warning -Message "[$((get-date).TimeOfDay.ToString()) PROCESS ] SQLInstance :$sqlInstEnum"
+        break
       }
       else {
         Write-Verbose -Message "[$((get-date).TimeOfDay.ToString()) PROCESS ] Found instance {$sqlInstEnum} on server {$Computername}"
