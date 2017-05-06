@@ -100,9 +100,7 @@
       }
     }
     else {
-      #ToCHeck if this is correct
       $sqlserver = new-object -TypeName 'Microsoft.SqlServer.Management.Smo.Server' -ArgumentList "$Computername\$SQLInstance"
-      
     }
    
     Write-Verbose -Message "[$((get-date).TimeOfDay.ToString()) PROCESS ] Checking if user {$Identity} exists on server {$sqlserver}"
@@ -123,14 +121,14 @@
       break
     }
     elseif($sqlserver.Databases[$dataBase].EnumLoginMappings() | Where-Object {$_.LoginName -contains $Identity}) {
-      Write-Verbose -Message "[$((get-date).TimeOfDay.ToString()) PROCESS ] Database {$dataBase} on server {$sqlserver} already contain {$Identity}"
+      Write-Verbose -Message "[$((get-date).TimeOfDay.ToString()) PROCESS ] Database {$dataBase} on server {$sqlserver} already contains user {$Identity}"
       Write-Verbose -Message "[$((get-date).TimeOfDay.ToString()) PROCESS ] Adding user {$Identity} to dbrole {$DBRole} on database {$Database} on server {$sqlserver}"
       ($sqlserver.Databases[$Database].Roles[$DBRole]).AddMember($Identity)
       Write-Verbose -Message "[$((get-date).TimeOfDay.ToString()) PROCESS ] Added user {$Identity} to dbrole {$DBRole} on database {$Database} on server {$sqlserver}"
       break
     }
     else {
-      Write-Verbose -Message "[$((get-date).TimeOfDay.ToString()) PROCESS ] Database {$dataBase} on server {$sqlserver} does not contain user {$Identity}"
+      Write-Verbose -Message "[$((get-date).TimeOfDay.ToString()) PROCESS ] Database {$dataBase} on server {$sqlserver} does not contains user {$Identity}"
       $dbUser = New-Object -TypeName ('Microsoft.SqlServer.Management.Smo.User') -ArgumentList ($sqlserver.Databases[$dataBase], $Identity)
       Write-Verbose -Message "[$((get-date).TimeOfDay.ToString()) PROCESS ] Creating user {$Identity} on database {$dataBase} on server {$sqlserver}"
       $dbUser.Login = $Identity
